@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'white_board/main'
   namespace :api do
     put 'tasks/switch_user'
   end
