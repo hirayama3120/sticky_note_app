@@ -4,22 +4,21 @@ import PropTypes from "prop-types"
 import UserBox from "./UserBox"
 
 class WhiteBoard extends React.Component {
-    constructor(props) {
-
+  constructor(props) {
     super(props);
 
-        this.state = { users: {}, loading: true, dropHandlers: {}, need_render: false };
+    this.state = { users: {}, loading: true, dropHandlers: {}, need_render: false };
 
-        this.dropHandlerRegister = this.dropHandlerRegister.bind(this);
+    this.dropHandlerRegister = this.dropHandlerRegister.bind(this);
     this.onTaskDrop = this.onTaskDrop.bind(this);
 
   }
 
-    componentDidMount() {
+  componentDidMount() {
     this.getData();
   }
 
-    shouldComponentUpdate(nextProps, nextState){
+  shouldComponentUpdate(nextProps, nextState){
     if (nextState.need_render) {
       return true;
     }
@@ -29,21 +28,21 @@ class WhiteBoard extends React.Component {
 
   }
 
-    getData() {
+  getData() {
     fetch(this.props.user_tasks_url)
       .then((response) => response.json())
       .then((json) => {
-                this.setState({users: json.users, loading: false, need_render: true});
+        this.setState({users: json.users, loading: false, need_render: true});
       })
       .catch((response) => {
         console.log('** error **');
       })
   }
 
-    callSwitchUser(task_id, user_id) {
+  callSwitchUser(task_id, user_id) {
     var switch_info = { switch_info: { task_id: task_id, user_id: user_id } };
 
-                fetch(this.props.switch_user_url, {
+    fetch(this.props.switch_user_url, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
@@ -57,34 +56,35 @@ class WhiteBoard extends React.Component {
 
   }
 
-    dropHandlerRegister(user_id, func) {
+  dropHandlerRegister(user_id, func) {
     var handlers = this.state.dropHandlers;
 
-            if ( ! handlers[user_id] ) {
+    if ( ! handlers[user_id] ) {
       handlers[user_id] = func;
       this.setState({dropHandlers: handlers, need_render: false});
     }
 
   }
 
-    onTaskDrop(prev_user_id, next_user_id, task) {
-        Object.keys(this.state.dropHandlers).map((key) => {
+  onTaskDrop(prev_user_id, next_user_id, task) {
+    Object.keys(this.state.dropHandlers).map((key) => {
       this.state.dropHandlers[key](prev_user_id, next_user_id, task);
     });
 
-        this.callSwitchUser(task.id, next_user_id);
+    this.callSwitchUser(task.id, next_user_id);
 
   }
 
-            render () {
+  render () {
     return (
       <React.Fragment>
         <div id="WhiteBoardTitle">{this.props.title}</div>
-        { ! this.state.loading && this.state.users.map((user) => <UserBox user={user} key={user.id} dropHandlerRegister={this.dropHandlerRegister} onTaskDrop={this.onTaskDrop} /> )}
+        <div id="WhiteBoard">
+          { ! this.state.loading && this.state.users.map((user) => <UserBox user={user} key={user.id} dropHandlerRegister={this.dropHandlerRegister} onTaskDrop={this.onTaskDrop} /> )}
+        </div>
       </React.Fragment>
     );
   }
 }
-
 
 export default WhiteBoard

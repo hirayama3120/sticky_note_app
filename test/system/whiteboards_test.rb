@@ -51,7 +51,6 @@ class WhiteboardsTest < ApplicationSystemTestCase
 
   end
 
-=begin
   test "style check" do
     # white_board/mainを開く。
     visit white_board_main_url;
@@ -75,7 +74,5 @@ class WhiteboardsTest < ApplicationSystemTestCase
     stickies.each do | sticky |
       sticky.assert_matches_style("background-color" => "rgba(255, 255, 0, 1)", "width" => "100px", "display" => "grid");
     end
-
   end
-=end  
 end
