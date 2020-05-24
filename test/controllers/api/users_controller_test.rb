@@ -15,4 +15,14 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal(3, json_data['users'].length);
 
   end
+
+  test "should create user" do
+    post api_users_create_user_url(:json)
+
+    assert_response :success
+
+    json_data = ActiveSupport::JSON.decode(@response.body);
+
+    assert_equal('New User', json_data['name'])
+  end
 end
