@@ -5,7 +5,7 @@ class Api::UsersController < ApplicationController
 
   def create_user
     begin
-      @new_user_count = User.where('name like ?', 'New User%').count
+      @new_user_count = User.where('name like ?', 'New User%').size
 
       @user = User.create(name: "New User" + (@new_user_count + 1).to_s)
 

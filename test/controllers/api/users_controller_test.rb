@@ -17,15 +17,15 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create user" do
-    before_user_count = User.all().length;
+    before_user_count = User.all().size
 
     post api_users_create_user_url(:json)
 
     assert_response :success
 
-    json_data = ActiveSupport::JSON.decode(@response.body);
-    after_user_count = User.all().length;
-    new_user_count = User.where('name like ?', 'New User%').count
+    json_data = ActiveSupport::JSON.decode(@response.body)
+    after_user_count = User.all().size
+    new_user_count = User.where('name like ?', 'New User%').size
 
     assert_equal(before_user_count + 1, after_user_count);
     assert_equal('New User' + new_user_count.to_s, json_data['name'])
