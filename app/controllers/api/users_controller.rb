@@ -4,12 +4,21 @@ class Api::UsersController < ApplicationController
   end
 
   def create_user
-    @user = User.create(name: "New User")
+    begin
+      @new_user_count = User.where('name like ?', 'New User%').count
 
-    if @user.save
-      render json: @user, status: :created
-    else
-      render json: @user.errors, status: :internal_server_error
+      @user = User.create(name: "New User" + (@new_user_count + 1).to_s)
+
+      if @user.save
+        render json: @user, status: :created
+      else
+        @errors.push("failes to add user: user.save() failes")
+        render :show_error
+      end
+    rescue => ex
+      @errors.push("failed to add user: an exception occurred.")
+      @errors.push(ex.to_s)
+      render :show_error
     end
   end
 end

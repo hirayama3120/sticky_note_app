@@ -75,12 +75,25 @@ class WhiteBoard extends React.Component {
 
   }
 
+  addUser() {
+    fetch(this.props.add_user_url, {
+      method: "POST"
+    })
+    .then(response => response.json())
+    .then(json => console.log(JSON.stringify(json)))
+    .then(response => this.getData())
+    .catch(error_response => console.log(error_response));
+  }
+
   render () {
     return (
       <React.Fragment>
         <div id="WhiteBoardTitle">{this.props.title}</div>
+        <div id="AddButton" >
+          <button type="submit" onClick={this.addUser.bind(this)}>Add User</button>
+        </div>
         <div id="WhiteBoard">
-          { ! this.state.loading && this.state.users.map((user) => <UserBox user={user} key={user.id} dropHandlerRegister={this.dropHandlerRegister} onTaskDrop={this.onTaskDrop} /> )}
+          { ! this.state.loading && this.state.users.map((user) => <UserBox user={user} key={user.id} dropHandlerRegister={this.dropHandlerRegister} onTaskDrop={this.onTaskDrop} addUser={this.addUser}/> )}
         </div>
       </React.Fragment>
     );
