@@ -19,7 +19,7 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
   test "should create user" do
     before_user_count = User.all().size
 
-    post api_users_create_user_url(:json)
+    post api_users_create_url(:json)
 
     assert_response :success
 

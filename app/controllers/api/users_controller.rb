@@ -3,11 +3,11 @@ class Api::UsersController < ApplicationController
     @users = User.all();
   end
 
-  def create_user
+  def create
     begin
       @new_user_count = User.where('name like ?', 'New User%').size
 
-      @user = User.create(name: "New User" + (@new_user_count + 1).to_s)
+      @user = User.new(name: "New User" + (@new_user_count + 1).to_s)
 
       if @user.save
         render json: @user, status: :created
@@ -21,4 +21,5 @@ class Api::UsersController < ApplicationController
       render :show_error
     end
   end
+
 end
